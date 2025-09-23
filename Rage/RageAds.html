@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RageAds — Рекламное Агентство</title>
+<style>
+  /* --- Общие стили --- */
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    background: linear-gradient(135deg, #0d1b2a, #1b263b);
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  h1, h2 {
+    font-weight: 700;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* --- Хедер --- */
+  header {
+    padding: 30px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  header h1 {
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
+
+  nav a {
+    margin-left: 30px;
+    font-weight: 500;
+    transition: 0.3s;
+  }
+
+  nav a:hover {
+    color: #00ffff;
+  }
+
+  /* --- Герой секция --- */
+  .hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    text-align: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Анимированные частицы */
+  .hero-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .particle {
+    position: absolute;
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: float 15s infinite linear;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+  }
+
+  /* Контент поверх фона */
+  .hero-content {
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 20px;
+  }
+
+  .hero h2 {
+    font-size: 50px;
+    margin: 0;
+    animation: fadeInDown 1.5s ease forwards;
+    opacity: 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero p {
+    font-size: 20px;
+    margin-top: 20px;
+    animation: fadeInUp 2s ease forwards;
+    opacity: 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  @keyframes fadeInDown {
+    0% { transform: translateY(-50px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes fadeInUp {
+    0% { transform: translateY(50px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  /* --- Секция клиентов --- */
+  .clients-section {
+    padding: 80px 0;
+    position: relative;
+  }
+
+  .clients-section h2 {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 36px;
+    color: #00ffff;
+  }
+
+  /* --- Карусель --- */
+  .carousel-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  .carousel {
+    display: flex;
+    overflow: hidden;
+    padding: 40px 0;
+    scroll-behavior: smooth;
+  }
+
+  .client-card {
+    flex: 0 0 50%;
+    padding: 20px;
+    transition: all 0.4s ease;
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+
+  .client-card.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .card-content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    padding: 30px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .avatar-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 20px;
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-link {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+
+  .avatar-link:hover {
+    transform: scale(1.05);
+  }
+
+  .name-link {
+    display: inline-block;
+    color: #00ffff;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+  }
+
+  .name-link:hover {
+    color: #ffffff;
+    border-bottom: 2px solid #00ffff;
+    transform: translateY(-2px);
+  }
+
+  /* --- Стрелки --- */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+  }
+
+  .arrow:hover {
+    background: rgba(0, 255, 255, 0.2);
+  }
+
+  .arrow-left {
+    left: 0;
+  }
+
+  .arrow-right {
+    right: 0;
+  }
+
+  /* --- Индикаторы --- */
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 15px;
+  }
+
+  .indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .indicator.active {
+    background: #00ffff;
+    transform: scale(1.2);
+  }
+
+  /* --- Footer --- */
+  footer {
+    text-align: center;
+    padding: 30px 0;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    margin-top: 50px;
+  }
+
+  /* Адаптивность */
+  @media (max-width: 992px) {
+    .client-card {
+      flex: 0 0 70%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .client-card {
+      flex: 0 0 90%;
+    }
+    
+    .hero h2 {
+      font-size: 36px;
+    }
+    
+    .hero p {
+      font-size: 18px;
+    }
+    
+    header {
+      padding: 20px;
+    }
+    
+    nav a {
+      margin-left: 15px;
+    }
+    
+    .avatar-container {
+      width: 150px;
+      height: 150px;
+    }
+    
+    .carousel-container {
+      padding: 0 40px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>RageAds</h1>
+  <nav>
+    <a href="#hero">Главная</a>
+    <a href="#clients">Наши клиенты</a>
+    <a href="#contact">Контакты</a>
+  </nav>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-particles" id="particles"></div>
+  
+  <div class="hero-content">
+    <h2>Продвигаем твой бренд на новый уровень</h2>
+    <p>RageAds — агентство, которое работает с топовыми блогерами и создает вирусные рекламные кампании.</p>
+  </div>
+</section>
+
+<section class="clients-section" id="clients">
+  <h2>Наши клиенты</h2>
+  
+  <div class="carousel-container">
+    <div class="arrow arrow-left">&#10094;</div>
+    <div class="arrow arrow-right">&#10095;</div>
+    
+    <div class="carousel" id="carousel">
+      <div class="client-card active">
+        <div class="card-content">
+          <a href="https://www.youtube.com/@Gelmo" target="_blank" class="avatar-link">
+            <div class="avatar-container">
+              <img src="гельмо.jpg" alt="Гельмо" class="avatar">
+            </div>
+          </a>
+          <a href="https://www.youtube.com/@Gelmo" target="_blank" class="name-link">Гельмо</a>
+        </div>
+      </div>
+      <div class="client-card">
+        <div class="card-content">
+          <a href="https://www.youtube.com/@kW1sst" target="_blank" class="avatar-link">
+            <div class="avatar-container">
+              <img src="квист.jpg" alt="Квист" class="avatar">
+            </div>
+          </a>
+          <a href="https://www.youtube.com/@kW1sst" target="_blank" class="name-link">Квист</a>
+        </div>
+      </div>
+      <div class="client-card">
+        <div class="card-content">
+          <a href="https://www.youtube.com/@sanhez_" target="_blank" class="avatar-link">
+            <div class="avatar-container">
+              <img src="санчез.jpg" alt="Санчез" class="avatar">
+            </div>
+          </a>
+          <a href="https://www.youtube.com/@sanhez_" target="_blank" class="name-link">Санчез</a>
+        </div>
+      </div>
+      <div class="client-card">
+        <div class="card-content">
+          <a href="https://www.youtube.com/@actuallyfanch" target="_blank" class="avatar-link">
+            <div class="avatar-container">
+              <img src="фанч.jpg" alt="Фанч" class="avatar">
+            </div>
+          </a>
+          <a href="https://www.youtube.com/@actuallyfanch" target="_blank" class="name-link">Фанч</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="carousel-indicators" id="indicators"></div>
+</section>
+
+<footer id="contact">
+  <p>Контакты: t.me/RageAds | ragemanager@yandex.ru</p>
+</footer>
+
+<script>
+  // Создание частиц для фона
+  function createParticles() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+    
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      // Случайные параметры
+      const size = Math.random() * 10 + 5;
+      const posX = Math.random() * 100;
+      const posY = Math.random() * 100;
+      const delay = Math.random() * 15;
+      
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${posX}%`;
+      particle.style.top = `${posY}%`;
+      particle.style.animationDelay = `${delay}s`;
+      
+      container.appendChild(particle);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    createParticles();
+    
+    const carousel = document.getElementById('carousel');
+    const cards = carousel.querySelectorAll('.client-card');
+    const indicatorsContainer = document.getElementById('indicators');
+    const leftArrow = document.querySelector('.arrow-left');
+    const rightArrow = document.querySelector('.arrow-right');
+    let currentIndex = 0;
+    
+    // Создаем индикаторы
+    cards.forEach((_, i) => {
+      const indicator = document.createElement('div');
+      indicator.classList.add('indicator');
+      if (i === 0) indicator.classList.add('active');
+      indicator.addEventListener('click', () => {
+        goToSlide(i);
+      });
+      indicatorsContainer.appendChild(indicator);
+    });
+    
+    const indicators = document.querySelectorAll('.indicator');
+    
+    // Функция для перехода к определенному слайду
+    function goToSlide(index) {
+      // Сбрасываем активный класс у всех карточек и индикаторов
+      cards.forEach(card => card.classList.remove('active'));
+      indicators.forEach(indicator => indicator.classList.remove('active'));
+      
+      // Устанавливаем новый активный слайд
+      currentIndex = index;
+      cards[currentIndex].classList.add('active');
+      indicators[currentIndex].classList.add('active');
+      
+      // Прокручиваем карусель к активному слайду
+      const cardWidth = cards[0].offsetWidth;
+      carousel.scrollTo({
+        left: cardWidth * currentIndex,
+        behavior: 'smooth'
+      });
+    }
+    
+    // Обработчики для стрелок
+    leftArrow.addEventListener('click', () => {
+      const newIndex = (currentIndex - 1 + cards.length) % cards.length;
+      goToSlide(newIndex);
+    });
+    
+    rightArrow.addEventListener('click', () => {
+      const newIndex = (currentIndex + 1) % cards.length;
+      goToSlide(newIndex);
+    });
+    
+    // Обработчик для прокрутки мышью
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
+    
+    carousel.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.pageX - carousel.offsetLeft;
+      scrollLeft = carousel.scrollLeft;
+    });
+    
+    carousel.addEventListener('mouseleave', () => {
+      isDragging = false;
+    });
+    
+    carousel.addEventListener('mouseup', () => {
+      isDragging = false;
+      
+      // Определяем направление прокрутки и переключаем слайд
+      const cardWidth = cards[0].offsetWidth;
+      const currentScroll = carousel.scrollLeft;
+      const newIndex = Math.round(currentScroll / cardWidth);
+      
+      // Если прокрутили достаточно далеко, переходим к следующему слайду
+      if (newIndex !== currentIndex) {
+        goToSlide(newIndex);
+      } else {
+        // Иначе возвращаемся к текущему слайду
+        goToSlide(currentIndex);
+      }
+    });
+    
+    carousel.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 2;
+      carousel.scrollLeft = scrollLeft - walk;
+    });
+    
+    // Добавляем обработчики для сенсорных устройств
+    carousel.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].pageX - carousel.offsetLeft;
+      scrollLeft = carousel.scrollLeft;
+    });
+    
+    carousel.addEventListener('touchend', () => {
+      const cardWidth = cards[0].offsetWidth;
+      const currentScroll = carousel.scrollLeft;
+      const newIndex = Math.round(currentScroll / cardWidth);
+      
+      if (newIndex !== currentIndex) {
+        goToSlide(newIndex);
+      } else {
+        goToSlide(currentIndex);
+      }
+    });
+    
+    carousel.addEventListener('touchmove', (e) => {
+      const x = e.touches[0].pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 2;
+      carousel.scrollLeft = scrollLeft - walk;
+    });
+  });
+</script>
+
+</body>
+</html>
