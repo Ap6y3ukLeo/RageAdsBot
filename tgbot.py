@@ -27,6 +27,9 @@ from pyrogram.enums import ChatAction
 # --- ТВОИ ДАННЫЕ ---
 # Загружаем из переменных окружения
 import os
+from dotenv import load_dotenv
+load_dotenv()  # Загружает переменные из .env файла
+
 API_ID = int(os.getenv("API_ID", "25511383"))
 API_HASH = os.getenv("API_HASH", "YOUR_API_HASH")
 FOLDER_ID = os.getenv("FOLDER_ID", "YOUR_FOLDER_ID")
